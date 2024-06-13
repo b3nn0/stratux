@@ -270,14 +270,6 @@
 
                         </form>
                     </div>
-                    <div class="form-group reset-flow" ng-class="{ 'section_invisible': (!visible_serialout)}">
-                        <label class="control-label col-xs-5">Serial Output Baudrate</label>
-                        <form name="ppmForm" ng-submit="updateBaud()" novalidate>
-                            <!-- type="number" not supported except on mobile -->
-                            <input class="col-xs-7" type="number" ng-model="Baud" placeholder="integer"
-                                ng-blur="updateBaud()" />
-                        </form>
-                    </div>
                     <div class="form-group reset-flow">
                         <label class="control-label col-xs-5">Static IPs</label>
                         <form name="staticipForm" ng-submit="updatestaticips()" novalidate>
@@ -303,6 +295,47 @@
                 </div>
             </div>
         </div>
+        <!-- Serial Output Settings -->
+        <div class="panel-group col-sm-12" ng-class="{ 'section_invisible': (!visible_serialout)}">
+            <div class="panel panel-default">
+                <div class="panel-heading">Serial Output Settings</div>
+                <div class="panel-body">
+                    <div ng-repeat="serial in SerialOutputs">
+        
+                        <div class="form-group reset-flow">
+                            <label class="control-label col-xs-5">{{serial.DeviceString}}</label>
+                            <form name="serialForm" ng-submit="updateBaud(serial)" novalidate>
+                                <!-- type="number" not supported except on mobile -->
+        
+                                <select class="custom-select" ng-model="serial.Baud" ng-blur="updateBaud(serial)">
+                                    <option value="1200" ng-selected="serial.Baud.toFixed(0)==1200">1200 Baud</option>
+                                    <option value="4800" ng-selected="serial.Baud.toFixed(0)==4800">4800 Baud</option>
+                                    <option value="9600" ng-selected="serial.Baud.toFixed(0)==9600">9600 Baud</option>
+                                    <option value="19200" ng-selected="serial.Baud.toFixed(0)==19200">19200 Baud</option>
+                                    <option value="38400" ng-selected="serial.Baud.toFixed(0)==38400">38400 Baud (DEFAULT)</option>
+                                    <option value="57200" ng-selected="serial.Baud.toFixed(0)==57200">57200 Baud</option>
+                                    <option value="115200" ng-selected="serial.Baud.toFixed(0)==115200">115200 Baud</option>
+                                </select>
+        
+        
+                                <select class="custom-select" ng-model="serial.Capability" ng-blur="updateBaud(serial)">
+                                    <option value="0" ng-selected="serial.Capability.toFixed(0)==0">AUTO (NMEA)</option>
+                                    <option value="1" ng-selected="serial.Capability.toFixed(0)==1">GDL90</option>
+                                    <option value="2" ng-selected="serial.Capability.toFixed(0)==2">AHRS_FFSIM</option>
+                                    <option value="4" ng-selected="serial.Capability.toFixed(0)==4">AHRS_GDL90</option>
+                                    <option value="8" ng-selected="serial.Capability.toFixed(0)==8">FALARM NMEA (DEFAULT)</option>
+                                    <option value="16" ng-selected="serial.Capability.toFixed(0)==16">FFSIM</option>
+                                    <!--
+                                    <option value="32" ng-selected="serial.Capability.toFixed(0)==32">RADIO KTX2</option>
+                                    -->
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- WiFi Settings -->
         <div class="panel-group col-sm-12">
             <div class="panel panel-default">
