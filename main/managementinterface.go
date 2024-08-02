@@ -407,6 +407,19 @@ func handleSettingsSetRequest(w http.ResponseWriter, r *http.Request) {
 					case "RadarRange":
 						globalSettings.RadarRange = int(val.(float64))
 						radarUpdate.SendJSON(globalSettings)
+					// Serial Management with Capabilities and Baud support
+					case "SerialOutput":
+						modelItem := val.(map[string]interface{})
+						if(modelItem["DeviceString"]!=nil && len(modelItem["DeviceString"].(string))>0 &&
+							modelItem["Baud"]!=nil && (modelItem["Baud"].(float64))>0){
+								dev := modelItem["DeviceString"].(string)
+								serialOut := globalSettings.SerialOutputs[dev]
+								serialOut.Baud = int(modelItem["Baud"].(float64))
+								serialOut.Capability = uint8(modelItem["Capability"].(float64))
+								globalSettings.SerialOutputs[dev]=serialOut
+								closeSerial(dev)
+						}
+					// TODO: This method is obsolete and can be removed
 					case "Baud":
 						if globalSettings.SerialOutputs != nil {
 							for dev, serialOut := range globalSettings.SerialOutputs {

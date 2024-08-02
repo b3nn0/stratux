@@ -282,10 +282,8 @@ function SettingsCtrl($rootScope, $scope, $state, $location, $window, $http) {
 		$scope.rawSettings = angular.toJson(data, true);
 		$scope.visible_serialout = false;
 		if ((settings.SerialOutputs !== undefined) && (settings.SerialOutputs !== null)) {
-			for (var k in settings.SerialOutputs) {
-				$scope.Baud = settings.SerialOutputs[k].Baud;
+			$scope.SerialOutputs = settings.SerialOutputs; 
 				$scope.visible_serialout = true;
-			}
 		}
 
 		$scope.DarkMode = settings.DarkMode;
@@ -441,12 +439,14 @@ function SettingsCtrl($rootScope, $scope, $state, $location, $window, $http) {
 		}
 	}
 
-	$scope.updateBaud = function () {
-		settings["Baud"] = 0;
-		if ($scope.Baud !== undefined && $scope.Baud !== null) {
-			settings["Baud"] = parseInt($scope.Baud);
+	$scope.updateBaud = function (serial) {
+		{
 			var newsettings = {
-				"Baud": settings["Baud"]
+				"SerialOutput": {
+					"DeviceString": serial.DeviceString,
+					"Baud": parseInt(serial.Baud),
+					"Capability": parseInt(serial.Capability)
+				}
 			};
 			// console.log(angular.toJson(newsettings));
 			setSettings(angular.toJson(newsettings));
